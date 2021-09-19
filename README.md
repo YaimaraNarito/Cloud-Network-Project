@@ -94,16 +94,25 @@ SSH into the control node and follow the steps below:
 Use the following command to run, download the playbook, update the files, etc.:
 
 - Command to verify that the container is on:
+    
      `$ docker container list -a` 
--Command to run container:
+     
+- Command to run container:
+    
      `$ sudo docker start elk`
+
 - Commands to open Ansible container:
+    
      `$ sudo docker start <container_name>`
      `$ sudo docker attach <container_name>`
      `$ cd <desired directory>`
+
 - Command to update host file:
+   
      `$ sudo nano /etc/ansible/host/`
+
 - Command to update configuration files with correct IP addresses and ports:
+    
      `sudo nano <relative/absolute path to the configuration file>`
 - Command to create a playbook:
      `$ nano playbook-name.yml`
