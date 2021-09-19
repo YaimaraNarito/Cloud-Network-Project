@@ -104,7 +104,9 @@ Use the following command to run, download the playbook, update the files, etc.:
 - Commands to open Ansible container:
     
      `$ sudo docker start <container_name>`
+    
      `$ sudo docker attach <container_name>`
+    
      `$ cd <desired directory>`
 
 - Command to update host file:
