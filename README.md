@@ -28,7 +28,7 @@ The configuration details of each machine may be found below.
 
 | Name                   | Function              | IP Address              | Operating System    |
 |------------------------|-----------------------|-------------------------|---------------------|
-| Jump Box               | Jump-Box-Provisioner  | 10.0.0.4                | Linux (Ubuntu 18.04)|
+| Jump Box               |Jump-Box-Provisioner   | 10.0.0.4                | Linux (Ubuntu 18.04)|
 | Web-1                  |Webserver              | 10.0.0.5                | Linux (Ubuntu 18.04)|
 | Web-2                  |Webserver              | 10.0.0.6                | Linux (Ubuntu 18.04)|
 | Elk-Server             |Webserver              | 10.1.0.4                | Linux (Ubuntu 18.04)|
@@ -38,7 +38,7 @@ The configuration details of each machine may be found below.
 
 The machines on the internal network are not exposed to the public Internet. 
 
-Only the Jump-Box-Provisioner machine can accept connections from the Internet. Access to this machine is only allowed from the following IP addresses: `Home Network`
+Only the Jump-Box-Provisioner machine can accept connections from the Internet. Access to this machine is only allowed from the following IP addresses: `Home Network IP address`
 
 Machines within the network can only be accessed by Jump-Box-Provisioner `(10.0.0.4)`
 
@@ -91,11 +91,20 @@ SSH into the control node and follow the steps below:
 - Update the `/ect/asnible/hosts` file to include the groups and specify them with brackets, i.e. `[Elk]`, and the Elk-Server IP address, i.e. `10.1.0.4` followed by `ansible_python_interpreter=usr/bin/python3`.
 - Run the playbook, and navigate to __http://[elk-server-ip]:5601/app/kibana#/home__ to check that the installation worked as expected.
 
-Use the following command to run, download the playbook, update the files, etc.
+Use the following command to run, download the playbook, update the files, etc.:
+
+- Command to verify that the container is on:
+     `$ docker container list -a` 
+-Command to run container:
+     `$ sudo docker start elk`
 - Commands to open Ansible container:
      `$ sudo docker start <container_name>`
      `$ sudo docker attach <container_name>`
      `$ cd <desired directory>`
+- Command to update host file:
+     `$ sudo nano /etc/ansible/host/`
+- Command to update configuration files with correct IP addresses and ports:
+     `sudo nano <relative/absolute path to the configuration file>`
 - Command to create a playbook:
      `$ nano playbook-name.yml`
 - Command to run the playbook:
