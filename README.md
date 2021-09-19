@@ -22,34 +22,34 @@ The main purpose of this network is to expose a load-balanced and monitored inst
 
 Load balancing ensures that the application will be highly available and reliable by effectively protecting against distributed denial-of-service (DDoS) attacks through the distribution of treaffic accross all servers within the network, in addition the jump-box restricts access to appoved users to the network.
 
-Integrating an ELK server allows users to easily monitor the vulnerable VMs for changes to the log files in Web-1 and Web-2 using the filebeat software and system metrics and statistics using metricbeat software.
+Integrating an ELK server allows users to easily monitor the vulnerable VMs for changes to the system log files in Web-1 and Web-2 using the filebeat software and system metrics and statistics using metricbeat software.
 
 The configuration details of each machine may be found below.
 
-| Name                   | Function | IP Address              | Operating System |
-|------------------------|----------|-------------------------|------------------|
-| Jump Box Provisioner   | Gateway  | 10.0.0.4, 104.40.93.9   | Linux            |
-| Web-1                  |Webserver | 10.0.0.5                | Linux            |
-| Web-2                  |Webserver | 10.0.0.6                | Linux            |
-| Elk-Server             |Webserver | 10.1.0.4, 137.117.56.188| Linux            |
+| Name                   | Function              | IP Address              | Operating System    |
+|------------------------|-----------------------|-------------------------|---------------------|
+| Jump Box               | Jump-Box-Provisioner  | 10.0.0.4                | Linux (Ubuntu 18.04)|
+| Web-1                  |Webserver              | 10.0.0.5                | Linux (Ubuntu 18.04)|
+| Web-2                  |Webserver              | 10.0.0.6                | Linux (Ubuntu 18.04)|
+| Elk-Server             |Webserver              | 10.1.0.4                | Linux (Ubuntu 18.04)|
 
 
 ### Access Policies
 
 The machines on the internal network are not exposed to the public Internet. 
 
-Only the Jump-Box-Provisioner machine can accept connections from the Internet. Access to this machine is only allowed from the following IP addresses: `70.117.239.1`
+Only the Jump-Box-Provisioner machine can accept connections from the Internet. Access to this machine is only allowed from the following IP addresses: `Home Network`
 
 Machines within the network can only be accessed by Jump-Box-Provisioner `(10.0.0.4)`
 
 A summary of the access policies in place can be found in the table below.
 
-| Name                 | Publicly Accessible | Allowed IP Addresses      |
-|----------------------|---------------------|---------------------------|
-| Jump Box Provisioner | Yes                 | 70.117.239.1, 10.0.0.0/16 |
-| Web-1                | No                  | 10.0.0.0/16               |
-| Web-2                | No                  | 10.0.0.0/16               |
-| Elk-Server           | Yes                 | 10.1.0.0/16               |
+| Name                 | Publicly Accessible    | Allowed IP Addresses      |
+|----------------------|------------------------|---------------------------|
+| Jump Box Provisioner | Yes/No                 | 104.40.93.9/10.0.0.4      |
+| Web-1                | No/No                  | 10.0.0.5/13.88.103.218    |
+| Web-2                | No/No                  | 10.0.0.6/13.88.103.218    |
+| Elk-Server           | No/No                  | 10.1.0.4/137.117.56.188   |
 
 
 ### Elk Configuration
@@ -80,7 +80,7 @@ We have installed the following Beats on these machines:
 - Metricbeat
 
 These Beats allow us to collect the following information from each machine:
-- These Beats allow for the collection of data to be analyzed for unespected, potentially malicious activity. For insatace,`Filebeat` collects logfiles which can be used to track unusual behavior within the network. Such behavior may include amount and frequency of failed logins, repeated login attempts within a short period of time by a single user, or unsual/unespeced amount of users logging in simultanously within a specific timeframe. At the same time, `Metricbeat` facilitates the collection of network traffic information, including but not limited to, a rushing outflowing data and the specific types of packets in the traffic, as well as detecting strange connections from foreign IP adresses.
+- These Beats allow for the collection of data to be analyzed for unespected, potentially malicious activity. For insatace,`Filebeat` collects logfiles which can be used to track unusual behavior within the network. Such behavior may include amount and frequency of failed logins, repeated login attempts within a short period of time by a single user, or unsual/unespeced amount of users logging in simultanously within a specific timeframe. At the same time, facilitates the collection of network traffic information, including but not limited to, a rushing outflowing data and the specific types of packets in the traffic, as well as detecting strange connections from foreign IP adresses. `Metricbeat` on th other hand, monitors and analyzes the operating system, i.e., CPU, memory, and load, as well as services, such as Apache and MySQL, that are running on the server to periodically collect metric and statistic data and inserts it into Elasticsearch.
 
 
 ### Using the Playbook
@@ -88,9 +88,15 @@ In order to use the playbook, you will need to have an Ansible control node alre
 
 SSH into the control node and follow the steps below:
 - Copy the `Elk-playbook.yml` file to `/etc/ansible/roles/install-elk/task`.
-- Update the `/ect/asnible/hosts` file to include the groups and specify them with brackets, i.e. [Elk].
-- Run the playbook, and navigate to __http://137.117.56.188:5601/app/kibana#/home__ to check that the installation worked as expected.
+- Update the `/ect/asnible/hosts` file to include the groups and specify them with brackets, i.e. `[Elk]`, and the Elk-Server IP address, i.e. `10.1.0.4` followed by `ansible_python_interpreter=usr/bin/python3`.
+- Run the playbook, and navigate to __http://[elk-server-ip]:5601/app/kibana#/home__ to check that the installation worked as expected.
 
 Use the following command to run, download the playbook, update the files, etc.
-
- `$ ansible-playbook install-elk.yml`
+- Commands to open Ansible container:
+     `$ sudo docker start <container_name>`
+     `$ sudo docker attach <container_name>`
+     `$ cd <desired directory>`
+- Command to create a playbook:
+     `$ nano playbook-name.yml`
+- Command to run the playbook:
+     `$ ansible-playbook <playbook-name.yml>`
