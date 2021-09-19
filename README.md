@@ -91,6 +91,6 @@ SSH into the control node and follow the steps below:
 - Update the `/ect/asnible/hosts` file to include the groups and specify them with brackets, i.e. [Elk].
 - Run the playbook, and navigate to __http://137.117.56.188:5601/app/kibana#/home__ to check that the installation worked as expected.
 
-_As a **Bonus**, provide the specific commands the user will need to run to download the playbook, update the files, etc.
+Use the following command to run, download the playbook, update the files, etc.
 
  `$ ansible-playbook install-elk.yml`
