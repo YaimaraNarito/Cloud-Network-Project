@@ -80,7 +80,7 @@ We have installed the following Beats on these machines:
 - Metricbeat
 
 These Beats allow us to collect the following information from each machine:
-- These Beats allow for the collection of data to be analyzed for unespected, potentially malicious activity. For insatace,`Filebeat` collects logfiles which can be used to track unusual behavior within the network. Such behavior may include amount and frequency of failed logins, repeated login attempts within a short period of time by a single user, or unsual/unespeced amount of users logging in simultanously within a specific timeframe. At the same time, facilitates the collection of network traffic information, including but not limited to, a rushing outflowing data and the specific types of packets in the traffic, as well as detecting strange connections from foreign IP adresses. `Metricbeat` on th other hand, monitors and analyzes the operating system, i.e., CPU, memory, and load, as well as services, such as Apache and MySQL, that are running on the server to periodically collect metric and statistic data and inserts it into Elasticsearch.
+- These Beats allow for the collection of data to be analyzed for unespected, potentially malicious activity. For insatace, `Filebeat` collects logfiles which can be used to track unusual behavior within the network. Such behavior may include amount and frequency of failed logins, repeated login attempts within a short period of time by a single user, or unsual/unespeced amount of users logging in simultanously within a specific timeframe. At the same time, facilitates the collection of network traffic information, including but not limited to, a rushing outflowing data and the specific types of packets in the traffic, as well as detecting strange connections from foreign IP adresses. `Metricbeat` on th other hand, monitors and analyzes the operating system, i.e., CPU, memory, and load, as well as services, such as Apache and MySQL, that are running on the server to periodically collect metric and statistic data and inserts it into Elasticsearch.
 
 
 ### Using the Playbook
@@ -88,8 +88,11 @@ In order to use the playbook, you will need to have an Ansible control node alre
 
 SSH into the control node and follow the steps below:
 - Copy the `Elk-playbook.yml` file to `/etc/ansible/roles/install-elk/task`.
+
 - Update the `/ect/asnible/hosts` file to include the groups and specify them with brackets, i.e. `[Elk]`, and the Elk-Server IP address, i.e. `10.1.0.4` followed by `ansible_python_interpreter=usr/bin/python3`.
+
 - Run the playbook, and navigate to __http://[elk-server-ip]:5601/app/kibana#/home__ to check that the installation worked as expected.
+
 
 Use the following command to run, download the playbook, update the files, etc.:
 
@@ -115,7 +118,7 @@ Use the following command to run, download the playbook, update the files, etc.:
 
 - Command to update configuration files with correct IP addresses and ports:
     
-     `sudo nano <relative/absolute path to the configuration file>`
+     `sudo nano <name-config file>`
 
 - Command to create a playbook:
     
