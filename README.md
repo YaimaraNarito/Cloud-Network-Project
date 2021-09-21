@@ -32,6 +32,7 @@ The configuration details of each machine may be found below.
 | Web-1                  |Webserver              | 10.0.0.5                | Linux (Ubuntu 18.04)|
 | Web-2                  |Webserver              | 10.0.0.6                | Linux (Ubuntu 18.04)|
 | Elk-Server             |Webserver              | 10.1.0.4                | Linux (Ubuntu 18.04)|
+|Red_Team_DVWALB         |Load Balancer          | 13.88.103.218           | N/A                 |
 
 
 ### Access Policies
@@ -47,9 +48,10 @@ A summary of the access policies in place can be found in the table below.
 | Name                 | Publicly Accessible    | Allowed IP Addresses      |
 |----------------------|------------------------|---------------------------|
 | Jump Box Provisioner | Yes/No                 | 104.40.93.9/10.0.0.4      |
-| Web-1                | No/No                  | 10.0.0.5/13.88.103.218    |
-| Web-2                | No/No                  | 10.0.0.6/13.88.103.218    |
-| Elk-Server           | No/No                  | 10.1.0.4/137.117.56.188   |
+| Web-1                | No/No                  | 13.88.103.218/10.0.0.5    |
+| Web-2                | No/No                  | 13.88.103.218/10.0.0.6    |
+| Elk-Server           | No/No                  | 137.117.56.188/10.1.0.4   |
+| Red_Team_DVWALB      | Yes                    | 13.88.103.218             |
 
 
 ### Elk Configuration
@@ -87,36 +89,118 @@ These Beats allow us to collect the following information from each machine:
 In order to use the playbook, you will need to have an Ansible control node already configured. Assuming you have such a control node provisioned: 
 
 SSH into the control node and follow the steps below:
+
+Install Elk:
+
 - Copy the `Elk-playbook.yml` file to `/etc/ansible/roles/install-elk/task`.
 
 - Update the `/ect/asnible/hosts` file to include the groups and specify them with brackets, i.e. `[Elk]`, and the Elk-Server IP address, i.e. `10.1.0.4` followed by `ansible_python_interpreter=usr/bin/python3`.
 
-- Run the playbook, and navigate to __http://[elk-server-ip]:5601/app/kibana#/home__ to check that the installation worked as expected.
+- Run the playbook using `$ ansible-playbook Elk-playbook.yml`
+
+- Navigate to [Kibana](http://[elk-server-ip]:5601/app/kibana#/home) to check that the installation worked as expected.
+
+[Screenshot of Kibana's home website](D:\yaima\Desktop\UTA-Cybersecurty-Boot-Camp\Project_1\Cloud-Network-Project\Images\Kibana_Dashboard.jpg)
+
+Install Filebeat:
+
+  While in the ansible container:
+
+- Run `curl https://gist.githubusercontent.com/slape/5cc350109583af6cbe577bbcc0710c93/raw/eca603b72586fbe148c11f9c87bf96a63cb25760/Filebeat > /etc/ansible//roles/install-filebeat/files/filebeat-config.yml` to download and save the configuration file
+
+- Run `nano filebeat-config.yml` to edit the following on the configuration file:
+
+     - Line #1106 (output.elasticsearch):
+
+          - username and password
+
+          - IP address of your elk server leaving the port number (9200).
+
+     - Line #1806 (setup.kibana):
+     
+          - IP address of your elk server leaving the port number (5601).
+
+-  Save the file
+
+- Create a playbook file, name it `filebeat-playbook.yml`, and save it under  `/etc/ansible/roles/install-filebeat/tasks`.
+
+  The playbook should contain the following tasks:
+
+     - Download the `.deb` file [here](artifacts.elastic.co).
+
+     - Install the `.deb`: `dpkg -i filebeat-7.4.0-amd64.deb`
+
+     - Using Ansible copy module, copy entire Filebeat configuration file from the Ansible container to the WebVMs under `/etc/filebeat/filebeat.yml`
+
+     - Run the following commands:
+
+          - `filebeat modules enable system`
+          
+          - `filebeat setup`
+          
+          - `service filebeat start`
+          
+     - Enable the filebeat service on boot using `systemd`.
+
+- To verify that ELK stack is receiving logs from your DVWA machines, go to the installation page in the ELK server GUI, scroll to Step 5: Module Status and click Verify Incoming Data.
+
+[Filebeat-Incoming-Data](D:\yaima\Desktop\UTA-Cybersecurty-Boot-Camp\Project_1\Cloud-Network-Project\Images\Check that data_Filebeat.jpg)
+
+[Filebeat-Dashboard](D:\yaima\Desktop\UTA-Cybersecurty-Boot-Camp\Project_1\Cloud-Network-Project\Images\Filebeat Dashboard.jpg)
+
+Install Metricbeat:
+
+- While in the ansible container
+
+- Run `curl (https://gist.githubusercontent.com/slape/58541585cc1886d2e26cd8be557ce04c/raw/0ce2c7e744c54513616966affb5e9d96f5e12f73/metricbeat) > /etc/ansible/roles/install-metricbeat/files/metricbeat-config.yml` to download and save the configuration file. 
+
+-  Run `nano metricbeat-config.yml` to edit the following on the configuration file:
+
+     - Line #1106 (output.elasticsearch):
+
+          - username and password
+
+          - IP address of your elk server leaving the port number (9200).
+
+     - Line #1806 (setup.kibana):
+     
+          - IP address of your elk server leaving the port number (5601).
+
+-  Save the file.
+
+- Create a playbook file, name it `metricbeat-playbook.yml`, and save it under  `/etc/ansible/roles/install-metricbeat/tasks`.
+
+  The playbook should contain the following tasks:
+
+     - Download the `.deb` file [here](https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-7.4.0-amd64.deb).
+
+     - Install the `.deb`: `dpkg -i metricbeat-7.4.0-amd64.deb`
+
+     - Using Ansible copy module, copy entire Filebeat configuration file from the Ansible container to the WebVMs under `/etc/metricbeat/metricbeat.yml`
+
+     - Run the following commands:
+
+          - `metricbeat modules enable docker`
+          
+          - `metricbeat setup`
+          
+     - Enable the metricbeat service on boot using `systemd`.
+
+- To verify that Metricbeat works as expected, go to the installation page in the ELK server GUI, scroll to Step 5: Module Status and click Check Data.
+
+[Metrtricbeat-Check-data](D:\yaima\Desktop\UTA-Cybersecurty-Boot-Camp\Project_1\Cloud-Network-Project\Images\Check that data_Metricbeat.jpg)
+
+[Metricbeat-Dashboard](D:\yaima\Desktop\UTA-Cybersecurty-Boot-Camp\Project_1\Cloud-Network-Project\Images\Metricbeat Dashboard.jpg)
 
 
-Use the following command to run, download the playbook, update the files, etc.:
-
-- Command to verify that the container is on:
-    
-     `$ docker container list -a` 
-
-- Command to run container:
-    
-     `$ sudo docker start elk`
-
-- Commands to open Ansible container:
-    
-     `$ sudo docker start <container_name>`
-    
-     `$ sudo docker attach <container_name>`
-    
-     `$ cd <desired directory>`
+### Bonus: Additional commands
+Ansible Commands:
 
 - Command to update host file:
    
      `$ sudo nano /etc/ansible/host/`
 
-- Command to update configuration files with correct IP addresses and ports:
+- Command to edit configuration files with correct IP addresses and ports:
     
      `sudo nano <name-config file>`
 
@@ -127,3 +211,30 @@ Use the following command to run, download the playbook, update the files, etc.:
 - Command to run the playbook:
    
      `$ ansible-playbook <playbook-name.yml>`
+
+- Command to verify that the container is on and get container name:
+    
+     `$ docker container list -a` 
+
+- Commands to open Ansible container:
+    
+     `$ sudo docker start <container_name>`
+    
+     `$ sudo docker attach <container_name>`
+
+Git Commands:
+
+- Command to clone or download a repository:
+
+     - `git clone https://github.com/your-username/yourlink.git`
+
+- Command to sync all items added to the repo (run from desired repo folder in your terminal):
+
+     - `git add .`
+
+- Command confirm the commit:
+     - `git commit -m "note describing commit"`
+
+- Command to finalize the zync:
+
+     - `git push`
