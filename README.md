@@ -235,6 +235,10 @@ Git Commands:
 - Command confirm the commit:
      - `git commit -m "note describing commit"`
 
+- Command to check the status of your repository:
+
+     - `git status`
+
 - Command to finalize the zync:
 
      - `git push`
