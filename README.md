@@ -232,8 +232,17 @@ Git Commands:
 
      - `git add .`
 
-- Command confirm the commit:
-     - `git commit -m "note describing commit"`
+- Command to add single file:
+
+     - `git add <filename>`
+
+- Command to confirm the commit:
+
+     - `git commit -m "Commit message"`
+
+- Command to commit files added with `git add` and changes:
+
+     - `git commit -a`
 
 - Command to check the status of your repository:
 
@@ -242,3 +251,7 @@ Git Commands:
 - Command to finalize the zync:
 
      - `git push`
+
+- Command to update from the remote reporsitory:
+
+     - `git pull`
