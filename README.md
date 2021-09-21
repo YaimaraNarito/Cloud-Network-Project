@@ -100,7 +100,7 @@ Install Elk:
 
 - Navigate to [Kibana](http://[elk-server-ip]:5601/app/kibana#/home) to check that the installation worked as expected.
 
-[Screenshot of Kibana's home website](D:\yaima\Desktop\UTA-Cybersecurty-Boot-Camp\Project_1\Cloud-Network-Project\Images\Kibana_Dashboard.jpg)
+![Screenshot of Kibana's home website](Images/Kibana_Dashboard.jpg)
 
 Install Filebeat:
 
@@ -144,9 +144,10 @@ Install Filebeat:
 
 - To verify that ELK stack is receiving logs from your DVWA machines, go to the installation page in the ELK server GUI, scroll to Step 5: Module Status and click Verify Incoming Data.
 
-[Filebeat-Incoming-Data](D:\yaima\Desktop\UTA-Cybersecurty-Boot-Camp\Project_1\Cloud-Network-Project\Images\Check that data_Filebeat.jpg)
+![Filebeat Incoming Data](Images/Check_data_Filebeat.jpg)
 
-[Filebeat-Dashboard](D:\yaima\Desktop\UTA-Cybersecurty-Boot-Camp\Project_1\Cloud-Network-Project\Images\Filebeat Dashboard.jpg)
+![Filebeat Dashboard](Images/Filebeat_Dashboard.jpg)
+
 
 Install Metricbeat:
 
@@ -188,9 +189,9 @@ Install Metricbeat:
 
 - To verify that Metricbeat works as expected, go to the installation page in the ELK server GUI, scroll to Step 5: Module Status and click Check Data.
 
-[Metrtricbeat-Check-data](D:\yaima\Desktop\UTA-Cybersecurty-Boot-Camp\Project_1\Cloud-Network-Project\Images\Check that data_Metricbeat.jpg)
+![Metrtricbeat Check data](Images/Check_data_Metricbeat.jpg)
 
-[Metricbeat-Dashboard](D:\yaima\Desktop\UTA-Cybersecurty-Boot-Camp\Project_1\Cloud-Network-Project\Images\Metricbeat Dashboard.jpg)
+![Metricbeat Dashboard](Images/Metricbeat_Dashboard.jpg)
 
 
 ### Bonus: Additional commands
